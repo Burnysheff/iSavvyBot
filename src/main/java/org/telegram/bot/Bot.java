@@ -16,6 +16,7 @@ import java.util.Map;
 public final class Bot extends TelegramLongPollingBot {
     private final List<Long> usersId = new ArrayList<>();
     Map<Long, String> dataMap = new HashMap<>();
+    Map<String, Long> messages = new HashMap<>();
     private final String BOT_NAME;
     private final String BOT_TOKEN;
 
@@ -41,6 +42,21 @@ public final class Bot extends TelegramLongPollingBot {
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Message message = update.getMessage();
+                if (message.getChatId() == -935929648) {
+                    Message origin = message.getReplyToMessage();
+
+                    if (messages.containsKey(origin.getText())) {
+                        Long chatId = messages.get(origin.getText());
+                        SendMessage outMess = new SendMessage();
+
+                        outMess.setText(message.getText());
+                        outMess.setChatId(String.valueOf(chatId));
+                        execute(outMess);
+
+                        return;
+                    }
+
+                }
                 if (!usersId.contains(message.getChatId())) {
                     askStart(update);
                 } else {
@@ -50,12 +66,12 @@ public final class Bot extends TelegramLongPollingBot {
 
                     String data = inMess.getText();
                     String downer = dataMap.get(update.getMessage().getFrom().getId());
-                    dataMap.remove(update.getMessage().getFrom().getId());
 
                     List<String> list = List.of(downer.split("#"));
 
                     String response = "Цель: " + list.get(0) + "\n";
                     response += ("Мир: " + list.get(1) + "\n");
+                    response += ("От: @" + inMess.getFrom().getUserName() + "\n");
                     response += ("Обращение: " + data);
 
                     outMess.setText(response);
@@ -66,6 +82,8 @@ public final class Bot extends TelegramLongPollingBot {
                     thanks.setText("Спасибо за обратную связь!\nВведите любую строку чтобы снова начать бота!");
                     thanks.setChatId(String.valueOf(chatId));
                     execute(thanks);
+
+                    messages.put(outMess.getText(), update.getMessage().getFrom().getId());
 
                     usersId.remove(update.getMessage().getFrom().getId());
                 }
