@@ -47,15 +47,17 @@ public final class Bot extends TelegramLongPollingBot {
 
                     if (messages.containsKey(origin.getText())) {
                         Long chatId = messages.get(origin.getText());
+                        if (chatId == -935929648) {
+                            return;
+                        }
                         SendMessage outMess = new SendMessage();
 
                         outMess.setText(message.getText());
                         outMess.setChatId(String.valueOf(chatId));
                         execute(outMess);
-
-                        return;
                     }
 
+                    return;
                 }
                 if (!usersId.contains(message.getChatId())) {
                     askStart(update);
