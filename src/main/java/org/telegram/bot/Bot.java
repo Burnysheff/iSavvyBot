@@ -73,7 +73,11 @@ public final class Bot extends TelegramLongPollingBot {
 
                     String response = "Цель: " + list.get(0) + "\n";
                     response += ("Мир: " + list.get(1) + "\n");
-                    response += ("От: @" + inMess.getFrom().getUserName() + "\n");
+                    if (inMess.getFrom().getUserName() != null) {
+                        response += ("От: @" + inMess.getFrom().getUserName() + "\n");
+                    } else {
+                        response += ("От: id" + inMess.getFrom().getId() + "\n");
+                    }
                     response += ("Обращение: " + data);
 
                     outMess.setText(response);
@@ -125,14 +129,19 @@ public final class Bot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> rowInlineOne = new ArrayList<>();
         InlineKeyboardButton mistake = new InlineKeyboardButton();
         mistake.setText("Сообщить об ошибке");
-        mistake.setCallbackData("Сообщить об ошибке");
+        mistake.setCallbackData("Ошибка");
         rowInlineOne.add(mistake);
 
         List<InlineKeyboardButton> rowInlineTwo = new ArrayList<>();
         InlineKeyboardButton review = new InlineKeyboardButton();
         review.setText("Оставить отзыв");
-        review.setCallbackData("Оставить отзыв");
+        review.setCallbackData("Отзыв");
         rowInlineTwo.add(review);
+
+        InlineKeyboardButton four = new InlineKeyboardButton();
+        four.setText("Оставить пожелание");
+        four.setCallbackData("Пожелание");
+        rowInlineTwo.add(four);
 
         List<InlineKeyboardButton> rowInlineThree = new ArrayList<>();
         InlineKeyboardButton other = new InlineKeyboardButton();
@@ -147,7 +156,7 @@ public final class Bot extends TelegramLongPollingBot {
         markupInline.setKeyboard(rowsInline);
 
         outMess.setChatId(String.valueOf(chatId));
-        outMess.setText("Ваша цель обращения?");
+        outMess.setText("Здравствуйте! Какая у Вас цель обращения?");
         outMess.setReplyMarkup(markupInline);
         execute(outMess);
     }
@@ -178,15 +187,57 @@ public final class Bot extends TelegramLongPollingBot {
         other.setCallbackData(data + "#" + "Мир_Умножения");
         rowInlineThree.add(other);
 
+        List<InlineKeyboardButton> rowInlineFour = new ArrayList<>();
+        InlineKeyboardButton four = new InlineKeyboardButton();
+        four.setText("Мир времени и часов");
+        four.setCallbackData(data + "#" + "Мир_Времени");
+        rowInlineFour.add(four);
+
+        List<InlineKeyboardButton> rowInlineFive = new ArrayList<>();
+        InlineKeyboardButton five = new InlineKeyboardButton();
+        five.setText("Мир цифр");
+        five.setCallbackData(data + "#" + "Мир_Цифр");
+        rowInlineFive.add(five);
+
+        List<InlineKeyboardButton> rowInlineSix = new ArrayList<>();
+        InlineKeyboardButton six = new InlineKeyboardButton();
+        six.setText("Мир обучения игре");
+        six.setCallbackData(data + "#" + "Мир_Обучения_Игре");
+        rowInlineSix.add(six);
+
+        List<InlineKeyboardButton> rowInlineSeven = new ArrayList<>();
+        InlineKeyboardButton seven = new InlineKeyboardButton();
+        seven.setText("Мир сложения");
+        seven.setCallbackData(data + "#" + "Мир_Сложения");
+        rowInlineSeven.add(seven);
+
+        List<InlineKeyboardButton> rowInlineEight = new ArrayList<>();
+        InlineKeyboardButton eight = new InlineKeyboardButton();
+        eight.setText("Мир пространственного вычисления");
+        eight.setCallbackData(data + "#" + "Мир_Простр_Тренажера");
+        rowInlineEight.add(eight);
+
+        List<InlineKeyboardButton> rowInlineNine = new ArrayList<>();
+        InlineKeyboardButton nine = new InlineKeyboardButton();
+        nine.setText("Проблема не с миром");
+        nine.setCallbackData(data + "#" + "Не_мир");
+        rowInlineNine.add(nine);
+
         rowsInline.add(rowInlineOne);
         rowsInline.add(rowInlineTwo);
         rowsInline.add(rowInlineThree);
+        rowsInline.add(rowInlineFour);
+        rowsInline.add(rowInlineFive);
+        rowsInline.add(rowInlineSix);
+        rowsInline.add(rowInlineSeven);
+        rowsInline.add(rowInlineEight);
+        rowsInline.add(rowInlineNine);
 
         markupInline.setKeyboard(rowsInline);
 
         SendMessage outMess = new SendMessage();
         outMess.setChatId(String.valueOf(chatId));
-        outMess.setText("О каком мире вы хотите сообщить?");
+        outMess.setText("О каком мире Вы хотите сообщить?");
         outMess.setReplyMarkup(markupInline);
 
         execute(outMess);
