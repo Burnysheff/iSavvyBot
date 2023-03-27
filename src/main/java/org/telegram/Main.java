@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(new Bot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
+            botsApi.registerBot(new Bot("ISavvy_helpbot", "6060041818:AAFAVGAAeyTTP4ADdN4cFzFeP37B9vlBpSo"));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
